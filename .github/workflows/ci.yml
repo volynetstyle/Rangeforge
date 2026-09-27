@@ -2,7 +2,33 @@ name: CI
 
 on:
   push:
+    paths:
+      - ".github/workflows/**"
+      - ".clang-format"
+      - ".clang-tidy"
+      - "CMakeLists.txt"
+      - "CMakePresets.json"
+      - "pixi.toml"
+      - "pixi.lock"
+      - "src/**"
+      - "include/**"
+      - "test/**"
+      - "examples/**"
+      - "scripts/**"
   pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".clang-format"
+      - ".clang-tidy"
+      - "CMakeLists.txt"
+      - "CMakePresets.json"
+      - "pixi.toml"
+      - "pixi.lock"
+      - "src/**"
+      - "include/**"
+      - "test/**"
+      - "examples/**"
+      - "scripts/**"
 
 permissions:
   contents: read
