@@ -26,6 +26,8 @@ Python is included for linting. The `research` environment adds NumPy, SciPy, pa
 
 Pixi uses the self-contained MinGW-w64 toolchain on Windows and conda-forge's native compiler toolchain on Linux and macOS. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
 
+Manual builds require CMake 3.28 or newer. The root CMake file connects project options, public headers, implementations, and tests. Public headers belong to the `rangeforge` target's `FILE_SET HEADERS`; sanitizer flags and clang-tidy apply only to project compilation targets. Use the standard `-DBUILD_TESTING=OFF` to build libraries without the three test executables (replacing `RANGEFORGE_BUILD_TESTS`). Installation and package exports are not implemented yet.
+
 GitHub Actions runs `pixi run check` on Windows, Linux, and Apple Silicon macOS, and repeats it on Linux with Clang. A separate Linux job runs the CTest suites with AddressSanitizer and UndefinedBehaviorSanitizer. These jobs run for pushes and pull requests that change project code, tests, build configuration, or CI tooling; documentation-only changes skip the workflow.
 
 Run the sanitizer build locally on Linux with:

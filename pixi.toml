@@ -4,7 +4,7 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64", "osx-arm64"]
 
 [dependencies]
-cmake = ">=3.21"
+cmake = ">=3.28"
 ninja = "*"
 clang-format = "*"
 clang-tools = "*"

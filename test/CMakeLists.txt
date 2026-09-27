@@ -1,0 +1,11 @@
+function(rangeforge_add_test name source library)
+  set(target "rangeforge_${name}_test")
+  add_executable(${target} ${source})
+  target_link_libraries(${target} PRIVATE ${library})
+  rangeforge_apply_project_options(${target})
+  add_test(NAME "rangeforge_${name}" COMMAND ${target})
+endfunction()
+
+rangeforge_add_test(differential differential.cpp rangeforge::solutions)
+rangeforge_add_test(oracle oracle.cpp rangeforge::rangeforge)
+rangeforge_add_test(mutation mutation_test.cpp rangeforge::rangeforge)
