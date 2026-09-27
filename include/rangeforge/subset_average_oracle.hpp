@@ -86,6 +86,7 @@ inline i32 subset_average_oracle(const Vector<i32> &values) {
                 for (usize word = word_shift; word < word_count; ++word) {
                     const u64 bits = source[word];
                     const usize target = word - word_shift;
+
                     destination[target] |= bits >> bit_shift;
 
                     if (bit_shift != 0 && target > 0) {

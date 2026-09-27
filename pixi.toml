@@ -11,6 +11,8 @@ clang-tools = "*"
 libclang13 = "*"
 
 [target.win-64.dependencies]
+# Match RF001's libclang parser with its builtin headers.
+clang = "23.*"
 gcc_win-64 = "*"
 gxx_win-64 = "*"
 

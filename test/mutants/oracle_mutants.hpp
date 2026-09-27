@@ -50,6 +50,7 @@ inline i32 allows_empty_remainder(const Vector<i32> &values) {
 // Mutant: loses the sign of every input value during normalization.
 inline i32 takes_absolute_values(const Vector<i32> &values) {
     Vector<i32> transformed;
+
     transformed.reserve(values.size());
 
     for (i32 value : values)

@@ -110,6 +110,7 @@ i32 maximum_deletions_balanced(Vector<i32> values) {
 
                 for (i32 index = cursor + 1; index <= last; ++index) {
                     const i32 destination = h + negative[index - 1] + row_offset;
+
                     next[destination] = min(next[destination], static_cast<u8>(index));
                 }
             }

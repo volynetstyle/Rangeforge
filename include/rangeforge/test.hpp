@@ -31,6 +31,7 @@ class TestRunner {
 
     [[nodiscard]] i32 report(OutputStream &out = cout) const {
         usize passed = 0;
+
         for (const auto &r : results_) {
             out << (r.passed ? "[PASS] " : "[FAIL] ") << r.name;
             if (!r.detail.empty())

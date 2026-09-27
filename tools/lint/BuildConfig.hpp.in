@@ -12,5 +12,6 @@ inline const std::vector<std::string> implicit_include_directories = {
 inline constexpr char generated_include_directory[] = "@RANGEFORGE_LINT_GENERATED_INCLUDE_CPP@";
 inline constexpr char clang_target[] = "@RANGEFORGE_LINT_TARGET_CPP@";
 inline constexpr char clang_sysroot[] = "@RANGEFORGE_LINT_SYSROOT_CPP@";
+inline constexpr char clang_resource_directory[] = "@RANGEFORGE_LINT_RESOURCE_DIRECTORY_CPP@";
 
 } // namespace rangeforge::lint

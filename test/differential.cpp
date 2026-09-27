@@ -28,11 +28,13 @@ int main() {
     tests.test("exhaustive small arrays", [&] {
         for (rf::i32 n = 1; n <= 8; ++n) {
             rf::u64 combinations = 1;
+
             for (rf::i32 i = 0; i < n; ++i)
                 combinations *= 5;
             for (rf::u64 code = 0; code < combinations; ++code) {
                 rf::u64 digits = code;
                 rf::Vector<rf::i32> values(n);
+
                 for (rf::i32 &value : values) {
                     value = static_cast<rf::i32>(digits % 5) - 2;
                     digits /= 5;

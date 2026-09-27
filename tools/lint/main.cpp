@@ -57,6 +57,8 @@ std::vector<std::string> compiler_arguments(const std::filesystem::path &root,
         arguments.push_back(std::string("--target=") + clang_target);
     if (clang_sysroot[0] != '\0')
         arguments.push_back(std::string("--sysroot=") + clang_sysroot);
+    arguments.push_back("-resource-dir");
+    arguments.push_back(clang_resource_directory);
 
     arguments.push_back("-I");
     arguments.push_back(generated_include_directory);

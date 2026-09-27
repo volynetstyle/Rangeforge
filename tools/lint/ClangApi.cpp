@@ -6,8 +6,12 @@
 #include <vector>
 
 #if defined(_WIN32)
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #else
 #include <dlfcn.h>
@@ -109,6 +113,7 @@ bool Api::load(std::string &error) {
         constexpr const char *names[] = {"libclang.so", "libclang.so.13", "libclang.so.23",
                                          "libclang.so.23.1"};
 #endif
+
         for (const char *name : names) {
             library_ = open_library_by_name(name);
             if (library_ != nullptr)
