@@ -18,7 +18,7 @@ Then build and run the differential tests:
 
 On Linux x86-64 or an Apple Silicon Mac, use `sh scripts/bootstrap.sh`, then `./.pixi/bin/pixi run check`. The bootstrap script downloads a pinned Pixi release, verifies its SHA-256, and installs dependencies from `pixi.lock`. It requires no separately installed Pixi, compiler, CMake, Ninja, Python, or Node.js.
 
-The `research` environment adds Python, NumPy, SciPy, pandas, matplotlib, and IPython:
+Python is included for linting. The `research` environment adds NumPy, SciPy, pandas, matplotlib, and IPython:
 
 ```powershell
 .\.pixi\bin\pixi.exe run -e research python
@@ -88,7 +88,9 @@ The oracle has its own validation executable, `test/oracle.cpp`, which compares 
 
 `<rangeforge/test.hpp>` provides `TestRunner`, assertions, seeded random generation, differential checks, and microbenchmarks. The test executable uses `subset_average_oracle` as its sole source of truth.
 
-`pixi run check` runs the format check, CTest suites, and RF001. `RF001` traverses libclang's AST (`CompoundStmt` and `DeclStmt`) to check that a run of declarations is separated from the next executable statement by a blank line. Run it on its own with `pixi run rf001` (`pixi run lint` is an alias).
+`pixi run check` runs the format check, CTest suites, and RF001. `RF001` uses LLVM's Python bindings to traverse libclang's AST (`CompoundStmt` and `DeclStmt`) and check that a run of declarations is separated from the next executable statement by a blank line. The Clang driver supplies the toolchain's header search paths. Run it on its own with `pixi run rf001` (`pixi run lint` and `pixi run rf001-clang` are aliases); no CMake build is required.
+
+RF001 scans C++ sources and headers under `src/`, `include/`, `test/`, `examples/`, and `tools/`, including nested blocks and project headers. It reports each file/line once, exits with status 1 for spacing violations, and status 2 for parse or setup errors. Comments alone do not count as a blank line. The custom code in `tools/lint/rf001.py` implements only this project rule; LLVM provides parsing, preprocessing, AST types, and library bindings. Clang, libclang, and the bindings are locked to major version 21 on all supported platforms.
 
 ## Lint
 
