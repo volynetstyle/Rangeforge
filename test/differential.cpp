@@ -1,4 +1,4 @@
-﻿#include <rangeforge/solutions.hpp>
+#include <rangeforge/solutions.hpp>
 #include <rangeforge/subset_average_oracle.hpp>
 #include <rangeforge/test.hpp>
 
@@ -6,11 +6,11 @@ namespace rf = rangeforge;
 
 int main() {
     rf::TestRunner tests;
-    const auto check_against_oracle = [](const rf::Vec<rf::i32>& values) {
+    const auto check_against_oracle = [](const rf::Vector<rf::i32>& values) {
         const rf::i32 expected = rf::subset_average_oracle(values);
         rf::require_equal(rf::solutions::maximum_deletions_balanced(values), expected,
                           "balanced implementation versus source of truth");
-        const rf::Vec<rf::i64> wide(values.begin(), values.end());
+        const rf::Vector<rf::i64> wide(values.begin(), values.end());
         rf::require_equal(rf::solutions::maximum_deletions_packed(wide), expected,
                           "packed implementation versus source of truth");
     };
@@ -28,7 +28,7 @@ int main() {
             for (rf::i32 i = 0; i < n; ++i) combinations *= 5;
             for (rf::u64 code = 0; code < combinations; ++code) {
                 rf::u64 digits = code;
-                rf::Vec<rf::i32> values(n);
+                rf::Vector<rf::i32> values(n);
                 for (rf::i32& value : values) {
                     value = static_cast<rf::i32>(digits % 5) - 2;
                     digits /= 5;
@@ -42,13 +42,13 @@ int main() {
         rf::Random random(0xD1FF2026);
         for (rf::usize case_index = 0; case_index < 5000; ++case_index) {
             const rf::usize n = random.integer<rf::usize>(1, 14);
-            const auto values = random.integers<rf::Vec<rf::i32>>(n, -30, 30);
+            const auto values = random.integers<rf::Vector<rf::i32>>(n, -30, 30);
             const rf::i32 expected = rf::subset_average_oracle(values);
             const rf::i32 balanced = rf::solutions::maximum_deletions_balanced(values);
-            const rf::Vec<rf::i64> wide(values.begin(), values.end());
+            const rf::Vector<rf::i64> wide(values.begin(), values.end());
             const rf::i32 packed = rf::solutions::maximum_deletions_packed(wide);
             if (balanced != expected || packed != expected) {
-                std::ofstream counterexample("counterexample.txt");
+                rf::OutputFileStream counterexample("counterexample.txt");
                 counterexample << "case " << case_index << " seed " << random.seed() << '\n';
                 for (const auto value : values) counterexample << value << ' ';
                 counterexample << '\n';

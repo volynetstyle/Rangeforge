@@ -1,4 +1,4 @@
-﻿#include <rangeforge/solutions.hpp>
+#include <rangeforge/solutions.hpp>
 
 #include <algorithm>
 #include <cstdlib>
@@ -7,7 +7,12 @@
 namespace rangeforge::solutions {
 namespace {
 
-void or_shift_left(Vec<u64> &bits, usize shift, usize source_bits) {
+using std::abs;
+using std::gcd;
+using std::min;
+using std::nth_element;
+
+void or_shift_left(Vector<u64> &bits, usize shift, usize source_bits) {
     if (source_bits == 0)
         return;
     const usize word_shift = shift >> 6;
@@ -34,24 +39,24 @@ void or_shift_left(Vec<u64> &bits, usize shift, usize source_bits) {
     }
 }
 
-bool get_bit(const Vec<u64> &bits, usize index) {
+bool get_bit(const Vector<u64> &bits, usize index) {
     return ((bits[index >> 6] >> (index & 63)) & 1ULL) != 0;
 }
 
 } // namespace
 
-i32 maximum_deletions_packed(Vec<i64> values) {
+i32 maximum_deletions_packed(Vector<i64> values) {
     const i32 n = static_cast<i32>(values.size());
     if (n <= 1)
         return 0;
 
-    Vec<i64> ordered = values;
-    std::nth_element(ordered.begin(), ordered.begin() + n / 2, ordered.end());
+    Vector<i64> ordered = values;
+    nth_element(ordered.begin(), ordered.begin() + n / 2, ordered.end());
     const i64 median = ordered[n / 2];
 
     i64 divisor = 0;
     for (const i64 value : values)
-        divisor = std::gcd(divisor, std::llabs(value - median));
+        divisor = gcd(divisor, abs(value - median));
     if (divisor == 0)
         return n - 1;
 
@@ -60,10 +65,10 @@ i32 maximum_deletions_packed(Vec<i64> values) {
     for (i64 &value : values) {
         value = (value - median) / divisor;
         total_sum += value;
-        bound += static_cast<usize>(std::llabs(value));
+        bound += static_cast<usize>(abs(value));
     }
 
-    const i64 denominator = std::gcd(std::llabs(total_sum), static_cast<i64>(n));
+    const i64 denominator = gcd(abs(total_sum), static_cast<i64>(n));
     const i32 q = n / static_cast<i32>(denominator);
     const i32 max_k = (n / 2 / q) * q;
     if (max_k == 0)
@@ -71,12 +76,12 @@ i32 maximum_deletions_packed(Vec<i64> values) {
 
     const usize width = 2 * bound + 1;
     const usize total_bits = static_cast<usize>(max_k + 1) * width;
-    Vec<u64> dp((total_bits + 63) >> 6, 0);
+    Vector<u64> dp((total_bits + 63) >> 6, 0);
     dp[bound >> 6] |= u64{1} << (bound & 63);
 
     i32 processed = 0;
     for (const i64 value : values) {
-        const i32 max_source_k = std::min(processed, max_k - 1);
+        const i32 max_source_k = min(processed, max_k - 1);
         const usize source_bits = static_cast<usize>(max_source_k + 1) * width;
         const usize shift = static_cast<usize>(static_cast<i64>(width) + value);
         or_shift_left(dp, shift, source_bits);

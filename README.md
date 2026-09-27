@@ -76,7 +76,7 @@ The oracle has its own validation executable, `test/oracle.cpp`, which compares 
 
 ## Style and utilities
 
-`<rangeforge/types.hpp>` defines Rust-inspired aliases (`usize`, `i32`, `i64`, `Vec<T>`, `String`, `Duration`, and others). Types use `PascalCase`; functions, variables, and fields use `snake_case`. The vocabulary is curated; standard algorithms remain in `std`.
+`<rangeforge/types.hpp>` defines Rust-inspired aliases (`usize`, `i32`, `i64`, `Vector<T>`, `String`, `Duration`, and others). Types use `PascalCase`; functions and variables use `snake_case`. Standard-library types used by the public API have Rangeforge aliases, and implementation files import the standard algorithms they use with local `using` declarations.
 
 `<rangeforge/test.hpp>` provides `TestRunner`, assertions, seeded random generation, differential checks, and microbenchmarks. The test executable uses `subset_average_oracle` as its sole source of truth.
 

@@ -1,16 +1,20 @@
-﻿#pragma once
+#pragma once
 
+#include <algorithm>
 #include <numeric>
 
 #include <rangeforge/subset_average_oracle.hpp>
 
 namespace oracle_test {
 
-inline rangeforge::i32 brute_force(const rangeforge::Vec<rangeforge::i32>& values) {
+using std::accumulate;
+using std::max;
+
+inline rangeforge::i32 brute_force(const rangeforge::Vector<rangeforge::i32>& values) {
     using namespace rangeforge;
     const i32 n = static_cast<i32>(values.size());
     if (n <= 1) return 0;
-    const i64 total = std::accumulate(values.begin(), values.end(), i64{0});
+    const i64 total = accumulate(values.begin(), values.end(), i64{0});
     i32 best = 0;
     const u64 limit = u64{1} << n;
     for (u64 mask = 1; mask + 1 < limit; ++mask) {
@@ -22,7 +26,7 @@ inline rangeforge::i32 brute_force(const rangeforge::Vec<rangeforge::i32>& value
                 ++count;
             }
         }
-        if (subset_sum * n == total * count) best = std::max(best, count);
+        if (subset_sum * n == total * count) best = max(best, count);
     }
     return best;
 }

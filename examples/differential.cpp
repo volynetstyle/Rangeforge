@@ -2,12 +2,10 @@
 #include <rangeforge/test.hpp>
 #include <rangeforge/types.hpp>
 
-#include <vector>
-
 namespace rf = rangeforge;
 
 // Replace this deliberately simple candidate with the optimized implementation.
-rf::i32 candidate(const rf::Vec<rf::i32> &values) { return rf::subset_average_oracle(values); }
+rf::i32 candidate(const rf::Vector<rf::i32> &values) { return rf::subset_average_oracle(values); }
 
 int main() {
     rf::TestRunner tests;
@@ -19,9 +17,9 @@ int main() {
         return 1;
 
     rf::Random random(123456789);
-    const bool matched = rf::differential<rf::Vec<rf::i32>>(
+    const bool matched = rf::differential<rf::Vector<rf::i32>>(
         1000, random, rf::subset_average_oracle, candidate, [](rf::Random &rng, rf::usize) {
-            return rng.integers<rf::Vec<rf::i32>>(rng.integer<rf::i32>(1, 12), -20, 20);
+            return rng.integers<rf::Vector<rf::i32>>(rng.integer<rf::i32>(1, 12), -20, 20);
         });
     rf::require(matched, "differential mismatch; see counterexample.txt");
 
