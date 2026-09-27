@@ -49,7 +49,8 @@ build-sanitize = { cmd = "cmake --build build/ninja-sanitize", depends-on = ["co
 test-sanitize = { cmd = "ctest --test-dir build/ninja-sanitize --output-on-failure", depends-on = ["build-sanitize"] }
 format-check = "cmake -P tools/check-format.cmake"
 format = "cmake -P tools/format.cmake"
-rf001 = "python tools/lint/rf001.py ."
+test-lint = "python -B -m unittest discover -s tools/lint -p test_*.py"
+rf001 = { cmd = "python -B tools/lint/rf001.py .", depends-on = ["test-lint"] }
 lint = { depends-on = ["rf001"] }
 configure-lint = "cmake --preset release-lint"
 build-lint = { cmd = "cmake --build --preset release-lint", depends-on = ["configure-lint"] }

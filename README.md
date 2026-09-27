@@ -89,6 +89,8 @@ The oracle has its own validation executable, `test/oracle.cpp`, which compares 
 
 RF001 scans C++ sources and headers under `src/`, `include/`, `test/`, `examples/`, and `tools/`, including nested blocks and project headers. It reports each file/line once, exits with status 1 for spacing violations, and status 2 for parse or setup errors. Comments alone do not count as a blank line. The custom code in `tools/lint/rf001.py` implements only this project rule; LLVM provides parsing, preprocessing, AST types, and library bindings. Clang, libclang, and the bindings are locked to major version 21 on all supported platforms.
 
+`pixi run test-lint` runs RF001 regression tests against real Clang ASTs, covering nested blocks, lambdas, declaration groups, comments, header deduplication, and parse/setup failures. These tests also check library discovery for Windows, Linux, and macOS and run automatically before RF001, including in CI. Empty lines inside block comments do not count as separators. RF001 includes `.hh` and `.hxx` headers and fails when no project sources are found.
+
 ## Lint
 
-Install LLVM's `clang-tidy` and `clang-format`, then run `npm run lint:tidy` and `npm run format:check`. The lint command uses the `release-lint` CMake preset.
+Pixi includes `clang-tidy` and `clang-format`. Run `pixi run lint-tidy` for the `release-lint` CMake preset or `pixi run format-check` to check formatting. Run `pixi run lint` for RF001 and its regression tests.
