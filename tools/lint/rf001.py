@@ -93,9 +93,9 @@ def main():
         prefix = Path(sys.prefix)
         pattern = {
             "win32": "Library/bin/libclang-13.dll",
-            "darwin": "lib/libclang.dylib",
+            "darwin": "lib/libclang*.dylib",
         }.get(sys.platform, "lib/libclang.so.*")
-        library = next(prefix.glob(pattern), None)
+        library = next(sorted(prefix.glob(pattern)), None)
         if library is None:
             raise RuntimeError(f"libclang is missing from {prefix}")
         Config.set_library_file(str(library))
