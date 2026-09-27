@@ -50,6 +50,7 @@ template <class A, class B>
 void require_equal(const A &actual, const B &expected, StringView expression = "values differ") {
     if (!(actual == expected)) {
         OutputStringStream msg;
+
         msg << expression;
         throw RuntimeError(msg.str());
     }
@@ -67,11 +68,13 @@ class Random {
 
     template <class Int> Int integer(Int low, Int high) {
         static_assert(IsIntegral<Int>::value, "Random::integer requires an integral type");
+
         return UniformIntegerDistribution<Int>(low, high)(engine_);
     }
 
     template <class Container, class Int> Container integers(usize count, Int low, Int high) {
         Container result;
+
         if constexpr (requires { result.reserve(count); })
             result.reserve(count);
         for (usize i = 0; i < count; ++i)
@@ -95,6 +98,7 @@ bool differential(usize cases, Random &random, Oracle &&oracle, Candidate &&cand
 
         if (!(actual == expected)) {
             OutputFileStream out(failure_file, IoState::binary);
+
             if (!out)
                 throw RuntimeError("cannot write counterexample: " + failure_file.string());
             out << "case " << i << "\nseed " << random.seed() << "\n";
@@ -120,9 +124,11 @@ template <class F> BenchmarkResult benchmark(String name, usize iterations, F &&
     if (iterations == 0)
         throw InvalidArgument("benchmark iterations must be positive");
     const auto start = Clock::now();
+
     for (usize i = 0; i < iterations; ++i)
         invoke(function, i);
     const f64 elapsed = BasicDuration<f64, MillisecondRatio>(Clock::now() - start).count();
+
     return {move(name), iterations, elapsed, elapsed * 1'000'000.0 / iterations};
 }
 

@@ -8,6 +8,7 @@ namespace rf = rangeforge;
 int main() {
     using std::to_string;
     rf::TestRunner tests;
+
     tests.test("mutation suite kills all oracle mutants", [] {
         using Mutant = rf::i32 (*)(const rf::Vector<rf::i32>&);
         const rf::Array<Mutant, 5> mutants = {
@@ -24,9 +25,11 @@ int main() {
             rf::Vector<rf::i32>{0, 0, 0, 1},
             rf::Vector<rf::i32>{5, 5, 5, 5},
         };
+
         for (rf::usize index = 0; index < mutants.size(); ++index) {
             const rf::i32 expected = oracle_test::brute_force(witnesses[index]);
             const rf::i32 mutated = mutants[index](witnesses[index]);
+
             rf::require(mutated != expected, "surviving mutant at index " + to_string(index));
         }
     });

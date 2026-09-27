@@ -29,6 +29,7 @@ using std::min;
 // sum of absolute input values.
 inline i32 subset_average_oracle(const Vector<i32> &values) {
     const i32 n = static_cast<i32>(values.size());
+
     if (n == 0)
         return 0;
     if (n > 50)
@@ -50,9 +51,11 @@ inline i32 subset_average_oracle(const Vector<i32> &values) {
     const usize word_count = (width + 63) / 64;
     Vector<Vector<u64>> reachable(n, Vector<u64>(word_count, 0));
     const usize zero_index = static_cast<usize>(sum_bound);
+
     reachable[0][zero_index >> 6] |= u64{1} << (zero_index & 63);
 
     i32 processed = 0;
+
     for (const i32 value : values) {
         const i32 max_count = min(n - 1, processed + 1);
 
