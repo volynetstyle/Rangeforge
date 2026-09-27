@@ -48,8 +48,12 @@ configure-sanitize = "cmake -S . -B build/ninja-sanitize -G Ninja -DCMAKE_BUILD_
 build-sanitize = { cmd = "cmake --build build/ninja-sanitize", depends-on = ["configure-sanitize"] }
 test-sanitize = { cmd = "ctest --test-dir build/ninja-sanitize --output-on-failure", depends-on = ["build-sanitize"] }
 format-check = "cmake -P tools/check-format.cmake"
+format = "cmake -P tools/format.cmake"
 rf001 = "python tools/lint/rf001.py ."
 lint = { depends-on = ["rf001"] }
+configure-lint = "cmake --preset release-lint"
+build-lint = { cmd = "cmake --build --preset release-lint", depends-on = ["configure-lint"] }
+lint-tidy = { depends-on = ["build-lint"] }
 check = { depends-on = ["format-check", "test", "rf001"] }
 
 [environments]

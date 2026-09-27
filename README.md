@@ -2,7 +2,7 @@
 
 Rangeforge is a small C++20 environment for differential testing and microbenchmarks. It is header-only for utilities and builds algorithm implementations as a separate library.
 
-For a step-by-step tutorial on building a C++ environment from a terminal with Pixi and CMake, see [English](STUDY.md) or [Українська](STUDY.uk.md). Both versions include a complete beginner project and explain how the Rangeforge environment works with any text editor.
+For a step-by-step tutorial on building a C++ environment from a terminal with Pixi and CMake, see [English](study/STUDY.md) or [Українська](study/STUDY.uk.md). Both versions include a complete beginner project and explain how the Rangeforge environment works with any text editor.
 
 ## Build and run with Pixi
 
@@ -40,27 +40,20 @@ pixi run test-sanitize
 
 It uses a separate `build/ninja-sanitize` directory and leaves the regular Release build untouched.
 
-## npm scripts
+## Build, test, and format with Pixi
 
-The build responsibilities are deliberately separated:
-
-- `package.json` provides optional npm shortcuts for existing workflows; the Pixi manifest is the plug-and-play build and dependency interface.
-- `CMakePresets.json` owns configure, build, and test configurations.
-- `CMakeLists.txt` defines targets and the actual build graph.
-
-The npm scripts are not required for setup and do not manage dependencies. `scripts/format.mjs` discovers C++ files under `src/`, `test/`, `include/`, `examples/`, and `tools/`, keeping the file list out of npm scripts.
+Pixi provides the project tools and tasks, so Node.js and npm are not needed:
 
 ```powershell
-npm test                 # configure, build, and run all CTest suites
-npm run build            # configure and compile
-npm run test:run         # run the already-built CTest suites
-npm run check            # tests and formatting check
-npm run format:check     # check C++ formatting (requires clang-format)
-npm run format           # apply C++ formatting
-npm run lint:tidy        # build the release-lint preset (requires clang-tidy)
+pixi run build          # configure and compile
+pixi run test           # build and run all CTest suites
+pixi run check          # tests, formatting check, and RF001 lint
+pixi run format-check   # check C++ formatting
+pixi run format         # apply C++ formatting
+pixi run lint-tidy      # build with clang-tidy enabled
 ```
 
-In PowerShell environments that block `npm.ps1`, invoke the same scripts with `npm.cmd`.
+The same commands work with the bootstrapped executable as `.\.pixi\bin\pixi.exe run <task>` on Windows or `./.pixi/bin/pixi run <task>` on Linux and macOS.
 
 ## Implementations
 
