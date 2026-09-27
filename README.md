@@ -2,6 +2,8 @@
 
 Rangeforge is a small C++20 environment for differential testing and microbenchmarks. It is header-only for utilities and builds algorithm implementations as a separate library.
 
+For a step-by-step tutorial on building a C++ environment from a terminal with Pixi and CMake, see [English](STUDY.md) or [Українська](STUDY.uk.md). Both versions include a complete beginner project and explain how the Rangeforge environment works with any text editor.
+
 ## Build and run with Pixi
 
 After cloning, bootstrap Pixi and install the locked environment with one command:
