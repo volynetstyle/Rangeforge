@@ -53,8 +53,8 @@ class Api {
 
     CXIndex (*createIndex)(int, int) = nullptr;
     void (*disposeIndex)(CXIndex) = nullptr;
-    int (*parseTranslationUnit)(CXIndex, const char *, const char *const *, int, void *,
-                                unsigned, unsigned, CXTranslationUnit *) = nullptr;
+    int (*parseTranslationUnit)(CXIndex, const char *, const char *const *, int, void *, unsigned,
+                                unsigned, CXTranslationUnit *) = nullptr;
     void (*disposeTranslationUnit)(CXTranslationUnit) = nullptr;
     CXCursor (*translationUnitCursor)(CXTranslationUnit) = nullptr;
     int (*visitChildren)(CXCursor, CXCursorVisitor, CXClientData) = nullptr;
@@ -65,8 +65,8 @@ class Api {
     CXSourceRange (*cursorExtent)(CXCursor) = nullptr;
     CXSourceLocation (*rangeStart)(CXSourceRange) = nullptr;
     CXSourceLocation (*rangeEnd)(CXSourceRange) = nullptr;
-    void (*expansionLocation)(CXSourceLocation, CXFile *, unsigned *, unsigned *, unsigned *) =
-        nullptr;
+    void (*expansionLocation)(CXSourceLocation, CXFile *, unsigned *, unsigned *,
+                              unsigned *) = nullptr;
     CXString (*fileName)(CXFile) = nullptr;
     const char *(*getCString)(CXString) = nullptr;
     void (*disposeString)(CXString) = nullptr;

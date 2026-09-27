@@ -12,16 +12,18 @@ int main() {
         for (rf::i32 n = 0; n <= 8; ++n) {
             rf::u64 combinations = 1;
 
-            for (rf::i32 index = 0; index < n; ++index) combinations *= 5;
+            for (rf::i32 index = 0; index < n; ++index)
+                combinations *= 5;
             for (rf::u64 code = 0; code < combinations; ++code) {
                 rf::u64 digits = code;
                 rf::Vector<rf::i32> values(n);
 
-                for (rf::i32& value : values) {
+                for (rf::i32 &value : values) {
                     value = static_cast<rf::i32>(digits % 5) - 2;
                     digits /= 5;
                 }
-                rf::require_equal(rf::subset_average_oracle(values), oracle_test::brute_force(values),
+                rf::require_equal(rf::subset_average_oracle(values),
+                                  oracle_test::brute_force(values),
                                   "oracle versus exhaustive reference");
             }
         }
@@ -44,7 +46,7 @@ int main() {
 
         try {
             (void)rf::subset_average_oracle(rf::Vector<rf::i32>(51, 0));
-        } catch (const rf::InvalidArgument&) {
+        } catch (const rf::InvalidArgument &) {
             too_many_rejected = true;
         }
         rf::require(too_many_rejected, "n > 50 must be rejected");
@@ -53,7 +55,7 @@ int main() {
 
         try {
             (void)rf::subset_average_oracle({10001});
-        } catch (const rf::InvalidArgument&) {
+        } catch (const rf::InvalidArgument &) {
             value_rejected = true;
         }
         rf::require(value_rejected, "out-of-range value must be rejected");

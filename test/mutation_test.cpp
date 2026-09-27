@@ -1,7 +1,7 @@
 #include <rangeforge/test.hpp>
 
-#include "oracle_test_support.hpp"
 #include "mutants/oracle_mutants.hpp"
+#include "oracle_test_support.hpp"
 
 namespace rf = rangeforge;
 
@@ -10,19 +10,15 @@ int main() {
     rf::TestRunner tests;
 
     tests.test("mutation suite kills all oracle mutants", [] {
-        using Mutant = rf::i32 (*)(const rf::Vector<rf::i32>&);
+        using Mutant = rf::i32 (*)(const rf::Vector<rf::i32> &);
         const rf::Array<Mutant, 5> mutants = {
-            oracle_mutants::returns_first_valid_size,
-            oracle_mutants::allows_empty_remainder,
-            oracle_mutants::takes_absolute_values,
-            oracle_mutants::truncates_target_sum,
+            oracle_mutants::returns_first_valid_size, oracle_mutants::allows_empty_remainder,
+            oracle_mutants::takes_absolute_values,    oracle_mutants::truncates_target_sum,
             oracle_mutants::returns_complement_size,
         };
         const rf::Array<rf::Vector<rf::i32>, 5> witnesses = {
-            rf::Vector<rf::i32>{5, 5, 5, 5},
-            rf::Vector<rf::i32>{1, 2, 4},
-            rf::Vector<rf::i32>{-4, 4},
-            rf::Vector<rf::i32>{0, 0, 0, 1},
+            rf::Vector<rf::i32>{5, 5, 5, 5}, rf::Vector<rf::i32>{1, 2, 4},
+            rf::Vector<rf::i32>{-4, 4},      rf::Vector<rf::i32>{0, 0, 0, 1},
             rf::Vector<rf::i32>{5, 5, 5, 5},
         };
 

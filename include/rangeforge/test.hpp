@@ -91,7 +91,6 @@ template <class Input, class Oracle, class Candidate, class Format>
 bool differential(usize cases, Random &random, Oracle &&oracle, Candidate &&candidate,
                   Format &&format, const Path &failure_file = "counterexample.txt") {
     for (usize i = 0; i < cases; ++i) {
-
         Input input = invoke(format, random, i);
         const auto expected = invoke(oracle, input);
         const auto actual = invoke(candidate, input);
@@ -133,9 +132,9 @@ template <class F> BenchmarkResult benchmark(String name, usize iterations, F &&
 }
 
 inline void print_benchmark(const BenchmarkResult &result, OutputStream &out = cout) {
-    out << result.name << ": " << result.iterations << " iterations, " << fixed
-        << setprecision(3) << result.totalMilliseconds << " ms total, "
-        << result.nanosecondsPerIteration << " ns/iteration\n";
+    out << result.name << ": " << result.iterations << " iterations, " << fixed << setprecision(3)
+        << result.totalMilliseconds << " ms total, " << result.nanosecondsPerIteration
+        << " ns/iteration\n";
 }
 
 } // namespace rangeforge

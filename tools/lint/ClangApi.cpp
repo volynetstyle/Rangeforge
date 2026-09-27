@@ -26,23 +26,22 @@ std::vector<std::filesystem::path> library_candidates() {
 #if defined(_WIN32)
         const std::filesystem::path library_dir = root / "Library" / "bin";
 
-        for (const std::string_view name : {"libclang.dll"sv, "libclang-13.dll"sv,
-                                            "libclang-23.dll"sv}) {
+        for (const std::string_view name :
+             {"libclang.dll"sv, "libclang-13.dll"sv, "libclang-23.dll"sv}) {
             candidates.push_back(library_dir / std::string(name));
         }
 #elif defined(__APPLE__)
         const std::filesystem::path library_dir = root / "lib";
 
         for (const std::string_view name : {"libclang.dylib"sv, "libclang.13.dylib"sv,
-                                            "libclang.23.dylib"sv,
-                                            "libclang.23.1.dylib"sv}) {
+                                            "libclang.23.dylib"sv, "libclang.23.1.dylib"sv}) {
             candidates.push_back(library_dir / std::string(name));
         }
 #else
         const std::filesystem::path library_dir = root / "lib";
 
-        for (const std::string_view name : {"libclang.so"sv, "libclang.so.13"sv,
-                                            "libclang.so.23"sv, "libclang.so.23.1"sv}) {
+        for (const std::string_view name :
+             {"libclang.so"sv, "libclang.so.13"sv, "libclang.so.23"sv, "libclang.so.23.1"sv}) {
             candidates.push_back(library_dir / std::string(name));
         }
 #endif
@@ -104,8 +103,8 @@ bool Api::load(std::string &error) {
 #if defined(_WIN32)
         constexpr const char *names[] = {"libclang.dll", "libclang-13.dll", "libclang-23.dll"};
 #elif defined(__APPLE__)
-        constexpr const char *names[] = {"libclang.dylib", "libclang.13.dylib",
-                                         "libclang.23.dylib", "libclang.23.1.dylib"};
+        constexpr const char *names[] = {"libclang.dylib", "libclang.13.dylib", "libclang.23.dylib",
+                                         "libclang.23.1.dylib"};
 #else
         constexpr const char *names[] = {"libclang.so", "libclang.so.13", "libclang.so.23",
                                          "libclang.so.23.1"};
@@ -124,7 +123,7 @@ bool Api::load(std::string &error) {
 
 #define RANGEFORGE_BIND(symbol, member)                                                            \
     if (!bind(library_, member, symbol)) {                                                         \
-        error = std::string("libclang is missing symbol ") + symbol;                              \
+        error = std::string("libclang is missing symbol ") + symbol;                               \
         close_library(library_);                                                                   \
         library_ = nullptr;                                                                        \
         return false;                                                                              \

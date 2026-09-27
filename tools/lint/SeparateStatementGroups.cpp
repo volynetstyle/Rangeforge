@@ -68,9 +68,9 @@ CompoundInfo *find_compound(Api &api, CompoundChildren &children, CXCursor curso
         return nullptr;
 
     const auto compound = std::find_if(bucket->second.begin(), bucket->second.end(),
-                                        [&api, cursor](const CompoundInfo &candidate) {
-                                            return api.equalCursors(candidate.cursor, cursor) != 0;
-                                        });
+                                       [&api, cursor](const CompoundInfo &candidate) {
+                                           return api.equalCursors(candidate.cursor, cursor) != 0;
+                                       });
 
     return compound == bucket->second.end() ? nullptr : &*compound;
 }
@@ -135,9 +135,8 @@ bool has_blank_line_between(const SourcePoint &previous_end, const SourcePoint &
         while (start <= source.size()) {
             const std::size_t finish = source.find('\n', start);
 
-            lines.push_back(source.substr(start, finish == std::string::npos
-                                                    ? std::string::npos
-                                                    : finish - start));
+            lines.push_back(source.substr(start, finish == std::string::npos ? std::string::npos
+                                                                             : finish - start));
             if (finish == std::string::npos)
                 break;
             start = finish + 1;

@@ -7,7 +7,7 @@ namespace rf = rangeforge;
 int main() {
     rf::TestRunner tests;
 
-    const auto check_against_oracle = [](const rf::Vector<rf::i32>& values) {
+    const auto check_against_oracle = [](const rf::Vector<rf::i32> &values) {
         const rf::i32 expected = rf::subset_average_oracle(values);
 
         rf::require_equal(rf::solutions::maximum_deletions_balanced(values), expected,
@@ -28,11 +28,12 @@ int main() {
     tests.test("exhaustive small arrays", [&] {
         for (rf::i32 n = 1; n <= 8; ++n) {
             rf::u64 combinations = 1;
-            for (rf::i32 i = 0; i < n; ++i) combinations *= 5;
+            for (rf::i32 i = 0; i < n; ++i)
+                combinations *= 5;
             for (rf::u64 code = 0; code < combinations; ++code) {
                 rf::u64 digits = code;
                 rf::Vector<rf::i32> values(n);
-                for (rf::i32& value : values) {
+                for (rf::i32 &value : values) {
                     value = static_cast<rf::i32>(digits % 5) - 2;
                     digits /= 5;
                 }
@@ -56,7 +57,8 @@ int main() {
                 rf::OutputFileStream counterexample("counterexample.txt");
 
                 counterexample << "case " << case_index << " seed " << random.seed() << '\n';
-                for (const auto value : values) counterexample << value << ' ';
+                for (const auto value : values)
+                    counterexample << value << ' ';
                 counterexample << '\n';
                 rf::require_equal(balanced, expected, "balanced random case");
                 rf::require_equal(packed, expected, "packed random case");

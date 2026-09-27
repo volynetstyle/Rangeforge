@@ -10,11 +10,12 @@ namespace oracle_test {
 using std::accumulate;
 using std::max;
 
-inline rangeforge::i32 brute_force(const rangeforge::Vector<rangeforge::i32>& values) {
+inline rangeforge::i32 brute_force(const rangeforge::Vector<rangeforge::i32> &values) {
     using namespace rangeforge;
     const i32 n = static_cast<i32>(values.size());
 
-    if (n <= 1) return 0;
+    if (n <= 1)
+        return 0;
     const i64 total = accumulate(values.begin(), values.end(), i64{0});
     i32 best = 0;
     const u64 limit = u64{1} << n;
@@ -29,7 +30,8 @@ inline rangeforge::i32 brute_force(const rangeforge::Vector<rangeforge::i32>& va
                 ++count;
             }
         }
-        if (subset_sum * n == total * count) best = max(best, count);
+        if (subset_sum * n == total * count)
+            best = max(best, count);
     }
     return best;
 }

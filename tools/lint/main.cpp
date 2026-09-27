@@ -25,8 +25,8 @@ bool is_cpp_file(const std::filesystem::path &path) {
 std::vector<std::filesystem::path> source_files(const std::filesystem::path &root) {
     std::vector<std::filesystem::path> files;
 
-    for (const std::filesystem::path &directory : {root / "src", root / "include", root / "test",
-                                                   root / "examples", root / "tools"}) {
+    for (const std::filesystem::path &directory :
+         {root / "src", root / "include", root / "test", root / "examples", root / "tools"}) {
         if (!std::filesystem::exists(directory))
             continue;
         for (const auto &entry : std::filesystem::recursive_directory_iterator(directory)) {
@@ -50,9 +50,8 @@ std::vector<std::string> compiler_arguments(const std::filesystem::path &root,
                                             const std::filesystem::path &source) {
     std::vector<std::string> arguments = {"-std=c++20", "-x"};
 
-    arguments.push_back(source.extension() == ".hpp" || source.extension() == ".h"
-                            ? "c++-header"
-                            : "c++");
+    arguments.push_back(source.extension() == ".hpp" || source.extension() == ".h" ? "c++-header"
+                                                                                   : "c++");
 
     if (clang_target[0] != '\0')
         arguments.push_back(std::string("--target=") + clang_target);
@@ -62,9 +61,9 @@ std::vector<std::string> compiler_arguments(const std::filesystem::path &root,
     arguments.push_back("-I");
     arguments.push_back(generated_include_directory);
 
-    for (const std::filesystem::path &directory : {root / "include", root / "test",
-                                                   root / "test" / "mutants", root / "examples",
-                                                   root / "src"}) {
+    for (const std::filesystem::path &directory :
+         {root / "include", root / "test", root / "test" / "mutants", root / "examples",
+          root / "src"}) {
         arguments.push_back("-I");
         arguments.push_back(directory.string());
     }
