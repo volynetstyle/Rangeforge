@@ -2,7 +2,7 @@
 import { spawnSync } from "node:child_process";
 import { extname, join } from "node:path";
 
-const roots = ["src", "test", "include"];
+const roots = ["src", "test", "include", "examples", "tools"];
 const extensions = new Set([".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx"]);
 
 function collectCppFiles(directory) {
@@ -15,7 +15,7 @@ function collectCppFiles(directory) {
 
 const files = roots.flatMap(collectCppFiles).sort();
 if (files.length === 0) {
-  console.error("No C++ source files found under src/, test/, or include/.");
+  console.error("No C++ source files found under src/, test/, include/, examples/, or tools/.");
   process.exit(1);
 }
 

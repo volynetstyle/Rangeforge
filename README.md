@@ -26,7 +26,15 @@ The `research` environment adds Python, NumPy, SciPy, pandas, matplotlib, and IP
 
 Pixi uses the self-contained MinGW-w64 toolchain on Windows and conda-forge's native compiler toolchain on Linux and macOS. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
 
-GitHub Actions runs the same `pixi run check` command on Windows, Linux, and Apple Silicon macOS for pushes and pull requests that change project code, tests, build configuration, or CI tooling. Documentation-only changes skip the workflow.
+GitHub Actions runs `pixi run check` on Windows, Linux, and Apple Silicon macOS, and repeats it on Linux with Clang. A separate Linux job runs the CTest suites with AddressSanitizer and UndefinedBehaviorSanitizer. These jobs run for pushes and pull requests that change project code, tests, build configuration, or CI tooling; documentation-only changes skip the workflow.
+
+Run the sanitizer build locally on Linux with:
+
+```sh
+pixi run test-sanitize
+```
+
+It uses a separate `build/ninja-sanitize` directory and leaves the regular Release build untouched.
 
 ## npm scripts
 
@@ -36,7 +44,7 @@ The build responsibilities are deliberately separated:
 - `CMakePresets.json` owns configure, build, and test configurations.
 - `CMakeLists.txt` defines targets and the actual build graph.
 
-The npm scripts are not required for setup and do not manage dependencies. `scripts/format.mjs` discovers C++ files under `src/`, `test/`, and `include/`, keeping the file list out of npm scripts.
+The npm scripts are not required for setup and do not manage dependencies. `scripts/format.mjs` discovers C++ files under `src/`, `test/`, `include/`, `examples/`, and `tools/`, keeping the file list out of npm scripts.
 
 ```powershell
 npm test                 # configure, build, and run all CTest suites
@@ -79,6 +87,8 @@ The oracle has its own validation executable, `test/oracle.cpp`, which compares 
 `<rangeforge/types.hpp>` defines Rust-inspired aliases (`usize`, `i32`, `i64`, `Vector<T>`, `String`, `Duration`, and others). Types use `PascalCase`; functions and variables use `snake_case`. Standard-library types used by the public API have Rangeforge aliases, and implementation files import the standard algorithms they use with local `using` declarations.
 
 `<rangeforge/test.hpp>` provides `TestRunner`, assertions, seeded random generation, differential checks, and microbenchmarks. The test executable uses `subset_average_oracle` as its sole source of truth.
+
+`pixi run check` runs the format check, CTest suites, and RF001. `RF001` traverses libclang's AST (`CompoundStmt` and `DeclStmt`) to check that a run of declarations is separated from the next executable statement by a blank line. Run it on its own with `pixi run rf001` (`pixi run lint` is an alias).
 
 ## Lint
 

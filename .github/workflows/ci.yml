@@ -12,6 +12,7 @@ on:
       - "pixi.lock"
       - "src/**"
       - "include/**"
+      - "tools/**"
       - "test/**"
       - "examples/**"
       - "scripts/**"
@@ -26,6 +27,7 @@ on:
       - "pixi.lock"
       - "src/**"
       - "include/**"
+      - "tools/**"
       - "test/**"
       - "examples/**"
       - "scripts/**"
@@ -55,3 +57,33 @@ jobs:
           cache: true
 
       - run: pixi run check
+
+  clang:
+    name: check (Ubuntu, Clang)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: prefix-dev/setup-pixi@v0.10.0
+        with:
+          pixi-version: v0.81.0
+          locked: true
+          cache: true
+
+      - run: pixi run check-clang
+
+  sanitizers:
+    name: test (Ubuntu, ASan + UBSan)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: prefix-dev/setup-pixi@v0.10.0
+        with:
+          pixi-version: v0.81.0
+          locked: true
+          cache: true
+
+      - run: pixi run test-sanitize

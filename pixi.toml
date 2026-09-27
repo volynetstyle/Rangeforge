@@ -8,6 +8,7 @@ cmake = ">=3.21"
 ninja = "*"
 clang-format = "*"
 clang-tools = "*"
+libclang13 = "*"
 
 [target.win-64.dependencies]
 gcc_win-64 = "*"
@@ -15,6 +16,7 @@ gxx_win-64 = "*"
 
 [target.linux-64.dependencies]
 compilers = "*"
+clangxx = "*"
 
 [target.osx-arm64.dependencies]
 compilers = "*"
@@ -31,7 +33,18 @@ ipython = "*"
 configure = "cmake -S . -B build/ninja-release -G Ninja -DCMAKE_BUILD_TYPE=Release"
 build = { cmd = "cmake --build build/ninja-release", depends-on = ["configure"] }
 test = { cmd = "ctest --test-dir build/ninja-release --output-on-failure", depends-on = ["build"] }
-check = { depends-on = ["test"] }
+configure-clang = "cmake -S . -B build/ninja-clang -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++"
+build-clang = { cmd = "cmake --build build/ninja-clang", depends-on = ["configure-clang"] }
+test-clang = { cmd = "ctest --test-dir build/ninja-clang --output-on-failure", depends-on = ["build-clang"] }
+rf001-clang = { cmd = "build/ninja-clang/rangeforge-lint .", depends-on = ["build-clang"] }
+check-clang = { depends-on = ["format-check", "test-clang", "rf001-clang"] }
+configure-sanitize = "cmake -S . -B build/ninja-sanitize -G Ninja -DCMAKE_BUILD_TYPE=Debug -DRANGEFORGE_ENABLE_SANITIZERS=ON"
+build-sanitize = { cmd = "cmake --build build/ninja-sanitize", depends-on = ["configure-sanitize"] }
+test-sanitize = { cmd = "ctest --test-dir build/ninja-sanitize --output-on-failure", depends-on = ["build-sanitize"] }
+format-check = "cmake -P tools/check-format.cmake"
+rf001 = { cmd = "build/ninja-release/rangeforge-lint .", depends-on = ["build"] }
+lint = { depends-on = ["rf001"] }
+check = { depends-on = ["format-check", "test", "rf001"] }
 
 [environments]
 default = ["default"]
