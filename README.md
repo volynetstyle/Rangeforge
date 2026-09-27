@@ -2,23 +2,39 @@
 
 Rangeforge is a small C++20 environment for differential testing and microbenchmarks. It is header-only for utilities and builds algorithm implementations as a separate library.
 
-## Build and run the differential tests
+## Build and run with Pixi
+
+After cloning, bootstrap Pixi and install the locked environment with one command:
 
 ```powershell
-npm test
+.\scripts\bootstrap.ps1
 ```
 
-The release configuration is defined by `CMakePresets.json`. To invoke CMake directly, use `cmake --preset release`, `cmake --build --preset release`, and `ctest --preset release`.
+Then build and run the differential tests:
+
+```powershell
+.\.pixi\bin\pixi.exe run check
+```
+
+On Linux x86-64 or an Apple Silicon Mac, use `sh scripts/bootstrap.sh`, then `./.pixi/bin/pixi run check`. The bootstrap script downloads a pinned Pixi release, verifies its SHA-256, and installs dependencies from `pixi.lock`. It requires no separately installed Pixi, compiler, CMake, Ninja, Python, or Node.js.
+
+The `research` environment adds Python, NumPy, SciPy, pandas, matplotlib, and IPython:
+
+```powershell
+.\.pixi\bin\pixi.exe run -e research python
+```
+
+Pixi uses the self-contained MinGW-w64 toolchain on Windows and conda-forge's native compiler toolchain on Linux and macOS. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
 
 ## npm scripts
 
 The build responsibilities are deliberately separated:
 
-- `package.json` is the human-facing task interface. npm scripts expose short commands and do not contain C++ build configuration.
+- `package.json` provides optional npm shortcuts for existing workflows; the Pixi manifest is the plug-and-play build and dependency interface.
 - `CMakePresets.json` owns configure, build, and test configurations.
 - `CMakeLists.txt` defines targets and the actual build graph.
 
-`package.json` is not used to manage dependencies; no npm packages need to be installed. `scripts/format.mjs` discovers C++ files under `src/`, `test/`, and `include/`, keeping the file list out of npm scripts.
+The npm scripts are not required for setup and do not manage dependencies. `scripts/format.mjs` discovers C++ files under `src/`, `test/`, and `include/`, keeping the file list out of npm scripts.
 
 ```powershell
 npm test                 # configure, build, and run all CTest suites
@@ -31,19 +47,6 @@ npm run lint:tidy        # build the release-lint preset (requires clang-tidy)
 ```
 
 In PowerShell environments that block `npm.ps1`, invoke the same scripts with `npm.cmd`.
-
-## Plug-and-play setup
-
-The setup script downloads a pinned Pixi binary, checks its SHA-256, and installs the exact packages recorded in the committed `pixi.lock`. Run it once after cloning; you do not need to install CMake, a compiler, Ninja, Python, or Pixi separately.
-
-```powershell
-.\scripts\bootstrap.ps1
-.\.pixi\bin\pixi.exe run check
-```
-
-On Linux x86-64 and Apple Silicon Macs, run `sh scripts/bootstrap.sh`, then `./.pixi/bin/pixi run check`. The scripts keep Pixi, its package cache, and the environment under the ignored `.pixi/` directory in the checkout.
-
-`pixi run check` configures a Ninja build under `build/pixi`, compiles the project, and runs all CTest suites. Use `pixi run -e research python` for the optional Python, NumPy, SciPy, pandas, matplotlib, and IPython stack. This project does not have a committed analysis script yet. The existing npm commands remain available for formatting and clang-tidy tasks.
 
 ## Implementations
 

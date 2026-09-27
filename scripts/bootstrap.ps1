@@ -1,5 +1,6 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $pixiRoot = Join-Path $root ".pixi"

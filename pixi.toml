@@ -4,11 +4,20 @@ channels = ["conda-forge"]
 platforms = ["win-64", "linux-64", "osx-arm64"]
 
 [dependencies]
-compilers = "*"
 cmake = ">=3.21"
 ninja = "*"
 clang-format = "*"
 clang-tools = "*"
+
+[target.win-64.dependencies]
+gcc_win-64 = "*"
+gxx_win-64 = "*"
+
+[target.linux-64.dependencies]
+compilers = "*"
+
+[target.osx-arm64.dependencies]
+compilers = "*"
 
 [feature.research.dependencies]
 python = ">=3.13"
@@ -19,9 +28,9 @@ matplotlib = "*"
 ipython = "*"
 
 [tasks]
-configure = "cmake -S . -B build/pixi -G Ninja -DCMAKE_BUILD_TYPE=Release"
-build = { cmd = "cmake --build build/pixi", depends-on = ["configure"] }
-test = { cmd = "ctest --test-dir build/pixi --output-on-failure", depends-on = ["build"] }
+configure = "cmake -S . -B build/ninja-release -G Ninja -DCMAKE_BUILD_TYPE=Release"
+build = { cmd = "cmake --build build/ninja-release", depends-on = ["configure"] }
+test = { cmd = "ctest --test-dir build/ninja-release --output-on-failure", depends-on = ["build"] }
 check = { depends-on = ["test"] }
 
 [environments]
