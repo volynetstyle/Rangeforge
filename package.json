@@ -1,0 +1,16 @@
+﻿{
+  "name": "rangeforge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "C++ differential testing and benchmarking utilities; npm scripts are the task interface",
+  "scripts": {
+    "configure": "cmake --preset release",
+    "build": "npm run configure && cmake --build --preset release",
+    "test:run": "ctest --preset release",
+    "test": "npm run build && npm run test:run",
+    "check": "npm test && npm run format:check",
+    "format": "node scripts/format.mjs",
+    "format:check": "node scripts/format.mjs --check",
+    "lint:tidy": "cmake --preset release-lint && cmake --build --preset release-lint"
+  }
+}

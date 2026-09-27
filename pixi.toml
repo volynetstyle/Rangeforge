@@ -1,0 +1,29 @@
+[workspace]
+name = "rangeforge"
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-arm64"]
+
+[dependencies]
+compilers = "*"
+cmake = ">=3.21"
+ninja = "*"
+clang-format = "*"
+clang-tools = "*"
+
+[feature.research.dependencies]
+python = ">=3.13"
+numpy = "*"
+scipy = "*"
+pandas = "*"
+matplotlib = "*"
+ipython = "*"
+
+[tasks]
+configure = "cmake -S . -B build/pixi -G Ninja -DCMAKE_BUILD_TYPE=Release"
+build = { cmd = "cmake --build build/pixi", depends-on = ["configure"] }
+test = { cmd = "ctest --test-dir build/pixi --output-on-failure", depends-on = ["build"] }
+check = { depends-on = ["test"] }
+
+[environments]
+default = ["default"]
+research = ["default", "research"]
