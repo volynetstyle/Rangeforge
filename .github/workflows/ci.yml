@@ -9,8 +9,16 @@ permissions:
 
 jobs:
   test:
-    runs-on: windows-latest
+    name: check (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-15
     steps:
       - uses: actions/checkout@v7.0.1
 

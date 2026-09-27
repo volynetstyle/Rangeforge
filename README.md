@@ -26,7 +26,7 @@ The `research` environment adds Python, NumPy, SciPy, pandas, matplotlib, and IP
 
 Pixi uses the self-contained MinGW-w64 toolchain on Windows and conda-forge's native compiler toolchain on Linux and macOS. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
 
-GitHub Actions runs the same `pixi run check` command on `windows-latest` for pushes and pull requests.
+GitHub Actions runs the same `pixi run check` command on Windows, Linux, and Apple Silicon macOS for pushes and pull requests.
 
 ## npm scripts
 
