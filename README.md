@@ -26,11 +26,13 @@ Python is included for linting. The `research` environment adds NumPy, SciPy, pa
 .\.pixi\bin\pixi.exe run -e research python
 ```
 
-Pixi uses the self-contained MinGW-w64 toolchain on Windows and conda-forge's native compiler toolchain on Linux and macOS. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
+Pixi uses the self-contained MinGW-w64 toolchain on Windows, conda-forge's GCC on Linux, and conda-forge's native compiler toolchain on macOS. The Linux `configure` task explicitly selects `g++` from the Pixi environment. It configures Ninja under `build/ninja-release`, separate from the manual CMake preset builds. For manual CMake builds, the release configuration is also defined by `CMakePresets.json`.
 
 Manual builds require CMake 3.28 or newer. The root CMake file connects project options, public headers, implementations, and tests. Public headers belong to the `rangeforge` target's `FILE_SET HEADERS`; sanitizer flags and clang-tidy apply only to project compilation targets. Use the standard `-DBUILD_TESTING=OFF` to build libraries without the three test executables (replacing `RANGEFORGE_BUILD_TESTS`). Installation and package exports are not implemented yet.
 
-GitHub Actions runs `pixi run check` on Windows, Linux, and Apple Silicon macOS, and repeats it on Linux with Clang. A separate Linux job runs the CTest suites with AddressSanitizer and UndefinedBehaviorSanitizer. These jobs run for pushes and pull requests that change project code, tests, build configuration, or CI tooling; documentation-only changes skip the workflow.
+GitHub Actions runs `pixi run check` on Windows (MinGW-w64 GCC), Linux (GCC), and Apple Silicon macOS (the native conda-forge toolchain). A separate Linux job runs `pixi run check-clang` with Clang, and another uses Clang to run the CTest suites with AddressSanitizer and UndefinedBehaviorSanitizer. The Linux GCC and Clang tasks require the matching CMake compiler ID, so selecting the wrong compiler fails configuration. These jobs run for pushes and pull requests that change project code, tests, build configuration, or CI tooling; documentation-only changes skip the workflow.
+
+A separate `bootstrap-smoke` matrix starts from a fresh checkout on the same three operating systems, runs the repository's bootstrap script, and runs `check` with the downloaded `.pixi/bin/pixi` executable. It does not use `setup-pixi` or restore a Pixi cache, so it exercises the download, SHA-256 verification, locked environment installation, and project checks together.
 
 Run the sanitizer build locally on Linux with:
 

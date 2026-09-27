@@ -1,5 +1,14 @@
 option(RANGEFORGE_ENABLE_SANITIZERS "Enable AddressSanitizer and UndefinedBehaviorSanitizer" OFF)
 option(RANGEFORGE_ENABLE_CLANG_TIDY "Run clang-tidy during compilation" OFF)
+set(RANGEFORGE_EXPECT_CXX_COMPILER_ID "" CACHE STRING "Require a specific CMake C++ compiler ID")
+
+if(RANGEFORGE_EXPECT_CXX_COMPILER_ID AND
+   NOT CMAKE_CXX_COMPILER_ID STREQUAL RANGEFORGE_EXPECT_CXX_COMPILER_ID)
+  message(FATAL_ERROR
+    "Expected C++ compiler ${RANGEFORGE_EXPECT_CXX_COMPILER_ID}, got "
+    "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} (${CMAKE_CXX_COMPILER})."
+  )
+endif()
 
 add_library(rangeforge_project_options INTERFACE)
 

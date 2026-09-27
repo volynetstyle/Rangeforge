@@ -60,6 +60,35 @@ jobs:
 
       - run: pixi run check
 
+  bootstrap-smoke:
+    name: bootstrap-smoke (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-15
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Bootstrap and check (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          .\scripts\bootstrap.ps1
+          .\.pixi\bin\pixi.exe run check
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Bootstrap and check (Linux and macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          sh scripts/bootstrap.sh
+          ./.pixi/bin/pixi run check
+
   clang:
     name: check (Ubuntu, Clang)
     runs-on: ubuntu-latest
@@ -76,7 +105,7 @@ jobs:
       - run: pixi run check-clang
 
   sanitizers:
-    name: test (Ubuntu, ASan + UBSan)
+    name: test (Ubuntu, Clang, ASan + UBSan)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

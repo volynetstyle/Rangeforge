@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from clang.cindex import Config, Diagnostic, Index
+from clang.cindex import Config, Diagnostic, Index # type: ignore
 
 import rf001
 

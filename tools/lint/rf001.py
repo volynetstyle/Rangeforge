@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 try:
-    from clang.cindex import (
+    from clang.cindex import ( # type: ignore
         Config, CursorKind, Diagnostic, Index, LibclangError, SourceRange,
         TokenKind, TranslationUnitLoadError,
     )
