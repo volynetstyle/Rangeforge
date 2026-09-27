@@ -1,3 +1,12 @@
+// Historical note:
+// This work started from a solution to the original problem shown to me by
+// Dmytro Kalinovskyi (@rt4x) around 2023, when he was a second-year student.
+//
+// The Rangeforge oracle below is an independent formalization and implementation
+// of the problem, using an exact count × subset-sum packed DP.
+//
+// https://github.com/rt4x
+// https://www.linkedin.com/in/dmytro-kalinovskyi-m/
 #pragma once
 
 #include <algorithm>
